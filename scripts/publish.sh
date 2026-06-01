@@ -7,6 +7,11 @@ wd=$(readlink -qe "${this_dir}"/../)
 
 cd "${wd}"
 
+[[ $(git status --porcelain) = "" ]] || {
+	echo "Uncommitted changes! Quitting." >&2
+	exit 1
+}
+
 old_branch=$(git branch --show-current)
 
 git checkout main # >/dev/null 2>/dev/null
