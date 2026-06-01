@@ -24,7 +24,11 @@ find -type f -name "*.raw.html" -exec rm {} \;
 git add .
 
 if [[ $(git status --porcelain) = "" ]]; then
-    echo "Nothing to do!"
+	echo
+	echo "+----------------------------------------------------------------------+"
+    echo "|                           Nothing to do!                             |"
+	echo "+----------------------------------------------------------------------+"
+	echo
     git checkout "${old_branch}"
     exit 0
 else
