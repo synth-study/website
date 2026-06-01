@@ -20,22 +20,16 @@ while read f ; do
     git restore --source dev "${f}"
 done < <(git ls-tree --full-tree -r --name-only dev | ag '\.(css|html|ico|js|png|xml)$' | ag -v '\.raw.html$')
 
+find -type f -name "*.raw.html" -exec rm {} \;
 git add .
 
-{
-    git commit -m "Latest site $(date)"
-} || {
+if [[ $(git status --porcelain) = "" ]]; then
     echo "Nothing to do!"
     git checkout "${old_branch}"
     exit 0
-}
-
-{
-    git push
-} || {
-    echo "Nothing to do!"
-    git checkout "${old_branch}"
-    exit 0
-}
+else
+	git commit -m "Latest site $(date)"
+	git push
+fi
 
 git checkout "${old_branch}"
